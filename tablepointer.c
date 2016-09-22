@@ -69,7 +69,7 @@ pushvalue(lua_State *L, const TValue *v) {
 		lua_pushlightuserdata(L, (void *)v);
 		break;
 	case LUA_TSTRING:
-		lua_pushlstring(L, svalue(v), tsvalue(v)->len);
+		lua_pushlstring(L, svalue(v), vslen(v));
 		break;
 	default:
 		luaL_error(L, "Don't support %s", lua_typename(L, t));
