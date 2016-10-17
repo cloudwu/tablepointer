@@ -66,7 +66,7 @@ pushvalue(lua_State *L, const TValue *v) {
 	}
 	switch (t) {
 	case LUA_TTABLE:
-		lua_pushlightuserdata(L, (void *)v);
+		lua_pushlightuserdata(L, hvalue(v));
 		break;
 	case LUA_TSTRING:
 		lua_pushlstring(L, svalue(v), vslen(v));
@@ -98,15 +98,13 @@ literator(lua_State *L) {
 			}
 		}
 	}
-	if (t->lsizenode > 0) {
-		index = hash_next(t, index);
-		if (index != 0) {
-			Node *n = gnode(t, -index-1);
-			lua_pushinteger(L, index);
-			pushvalue(L, gkey(n));			
-			pushvalue(L, gval(n));
-			return 3;
-		}
+	index = hash_next(t, index);
+	if (index != 0) {
+		Node *n = gnode(t, -index-1);
+		lua_pushinteger(L, index);
+		pushvalue(L, gkey(n));
+		pushvalue(L, gval(n));
+		return 3;
 	}
 	return 0;
 }
